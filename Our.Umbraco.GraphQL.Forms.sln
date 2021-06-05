@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Our.Umbraco.GraphQL.Forms", "src\Our.Umbraco.GraphQL.Forms\Our.Umbraco.GraphQL.Forms.csproj", "{F4E59846-A044-439A-B074-9402FA5F474B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Our.Umbraco.GraphQL.Forms", "src\Our.Umbraco.GraphQL.Forms\Our.Umbraco.GraphQL.Forms.csproj", "{F4E59846-A044-439A-B074-9402FA5F474B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Website", "src\Website\Website.csproj", "{6EE9396E-4ED7-4A3B-B027-9D3ECB78E730}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,12 +17,13 @@ Global
 		{F4E59846-A044-439A-B074-9402FA5F474B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4E59846-A044-439A-B074-9402FA5F474B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4E59846-A044-439A-B074-9402FA5F474B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EE9396E-4ED7-4A3B-B027-9D3ECB78E730}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EE9396E-4ED7-4A3B-B027-9D3ECB78E730}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EE9396E-4ED7-4A3B-B027-9D3ECB78E730}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EE9396E-4ED7-4A3B-B027-9D3ECB78E730}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{F4E59846-A044-439A-B074-9402FA5F474B} = {BE019E17-BF39-443C-8D62-74940D3B6560}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EF5ED350-4522-4159-8FDC-A80A46E7DD7F}

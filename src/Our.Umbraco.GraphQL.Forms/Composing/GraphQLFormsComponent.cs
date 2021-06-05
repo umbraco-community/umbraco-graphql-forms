@@ -2,7 +2,7 @@ using Our.Umbraco.GraphQL.Adapters.Types.Resolution;
 using Our.Umbraco.GraphQL.Forms.Types;
 using Our.Umbraco.GraphQL.Types;
 using System.Collections.Generic;
-using Umbraco.Core.Composing;
+using Umbraco.Cms.Core.Composing;
 using Umbraco.Forms.Core;
 using Umbraco.Forms.Core.Interfaces;
 using Umbraco.Forms.Core.Models;

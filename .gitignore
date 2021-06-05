@@ -17,3 +17,5 @@ node_modules/
 [Oo]bj/
 CurrentSettings.vssettings
 Visual Studio 2017/*
+/src/Website/umbraco
+/src/Website/wwwroot/umbraco

@@ -12,13 +12,14 @@ using Umbraco.Forms.Core.Data.Storage;
 using Umbraco.Forms.Core.Enums;
 using Umbraco.Forms.Core.Interfaces;
 using Umbraco.Forms.Core.Models;
+using Umbraco.Forms.Core.Services;
 using Umbraco.Forms.Data.Storage;
 
 namespace Our.Umbraco.GraphQL.Forms.Types
 {
     public static class UmbracoFormsGraphTypeExtensions
     {
-        public static void AddBuiltinFields(this ComplexGraphType<Form> graphType, IDataSourceStorage dataSourceStorage = null, IWorkflowStorage workflowStorage = null)
+        public static void AddBuiltinFields(this ComplexGraphType<Form> graphType, IDataSourceService dataSourceService = null)
         {
             graphType.Field<StringGraphType>().Name("name").Metadata(nameof(MemberInfo), GetMember((Form x) => x.Name)).Resolve(ctx => ctx.Source.Name);
             graphType.Field<NonNullGraphType<DateTimeGraphType>>().Name("created").Metadata(nameof(MemberInfo), GetMember((Form x) => x.Created)).Resolve(ctx => ctx.Source.Created);
@@ -37,19 +38,12 @@ namespace Our.Umbraco.GraphQL.Forms.Types
             graphType.Field<NonNullGraphType<BooleanGraphType>>().Name("storeRecordsLocally").Metadata(nameof(MemberInfo), GetMember((Form x) => x.StoreRecordsLocally)).Resolve(ctx => ctx.Source.StoreRecordsLocally);
             graphType.Field<StringGraphType>().Name("cssClass").Metadata(nameof(MemberInfo), GetMember((Form x) => x.CssClass)).Resolve(ctx => ctx.Source.CssClass);
             graphType.Field<NonNullGraphType<BooleanGraphType>>().Name("disableDefaultStylesheet").Metadata(nameof(MemberInfo), GetMember((Form x) => x.DisableDefaultStylesheet)).Resolve(ctx => ctx.Source.DisableDefaultStylesheet);
-            graphType.Field<NonNullGraphType<BooleanGraphType>>().Name("useClientDependency").Metadata(nameof(MemberInfo), GetMember((Form x) => x.UseClientDependency)).Resolve(ctx => ctx.Source.UseClientDependency);
-            graphType.Field<ListGraphType<GuidGraphType>>().Name("workflowIds").Metadata(nameof(MemberInfo), GetMember((Form x) => x.WorkflowIds)).Resolve(ctx => ctx.Source.WorkflowIds);
             graphType.Field<FormDataSourceDefinitionGraphType>().Name("dataSourceDefinition").Metadata(nameof(MemberInfo), GetMember((Form x) => x.DataSource)).Resolve(ctx => ctx.Source.DataSource);
             graphType.Field<StringGraphType>().Name("submitLabel").Metadata(nameof(MemberInfo), GetMember((Form x) => x.SubmitLabel)).Resolve(ctx => ctx.Source.SubmitLabel);
             graphType.Field<StringGraphType>().Name("nextLabel").Metadata(nameof(MemberInfo), GetMember((Form x) => x.NextLabel)).Resolve(ctx => ctx.Source.NextLabel);
             graphType.Field<StringGraphType>().Name("prevLabel").Metadata(nameof(MemberInfo), GetMember((Form x) => x.PrevLabel)).Resolve(ctx => ctx.Source.PrevLabel);
 
-            graphType.Field<FormDataSourceGraphType>().Name("_dataSource").Resolve(ctx => ctx.Source.DataSource != null && dataSourceStorage != null ? dataSourceStorage.GetDataSource(ctx.Source.DataSource.Id) : null);
-
-            graphType.Connection<WorkflowGraphType>().Name("_workflows")
-                .Bidirectional()
-                .Resolve(ctx => (workflowStorage == null ? new List<IWorkflow>() : (ctx.Source.WorkflowIds ?? new List<Guid>()).Select(i => workflowStorage.GetWorkflow(i)).ToList())
-                    .ToConnection(x => x.Id, ctx.First, ctx.After, ctx.Last, ctx.Before));
+            graphType.Field<FormDataSourceGraphType>().Name("_dataSource").Resolve(ctx => ctx.Source.DataSource != null && dataSourceService != null ? dataSourceService.Get(ctx.Source.DataSource.Id) : null);
         }
 
         public static void AddBuiltinFields(this ComplexGraphType<Page> graphType)
@@ -104,7 +98,7 @@ namespace Our.Umbraco.GraphQL.Forms.Types
             graphType.Field<ListGraphType<FieldConditionRuleGraphType>>().Name("rules").Metadata(nameof(MemberInfo), GetMember((FieldCondition x) => x.Rules)).Resolve(ctx => ctx.Source.Rules);
         }
 
-        public static void AddBuiltinFields(this ComplexGraphType<Field> graphType, IPrevalueSourceStorage prevalueSourceStorage = null)
+        public static void AddBuiltinFields(this ComplexGraphType<Field> graphType, IPrevalueSourceService prevalueSourceService = null)
         {
             graphType.Field<StringGraphType>().Name("caption").Metadata(nameof(MemberInfo), GetMember((Field x) => x.Caption)).Resolve(ctx => ctx.Source.Caption);
             graphType.Field<StringGraphType>().Name("tooltip").Metadata(nameof(MemberInfo), GetMember((Field x) => x.ToolTip)).Resolve(ctx => ctx.Source.ToolTip);
@@ -124,7 +118,7 @@ namespace Our.Umbraco.GraphQL.Forms.Types
             graphType.Field<ListGraphType<StringKeyValuePairGraphType>>().Name("settings").Metadata(nameof(MemberInfo), GetMember((Field x) => x.Settings)).Resolve(ctx => ctx.Source.Settings);
             graphType.Field<ListGraphType<StringGraphType>>().Name("preValues").Metadata(nameof(MemberInfo), GetMember((Field x) => x.PreValues)).Resolve(ctx => ctx.Source.PreValues);
 
-            graphType.Field<NonNullGraphType<GuidGraphType>>().Name("_prevalueSource").Resolve(ctx => !Guid.Empty.Equals(ctx.Source.PreValueSourceId) && prevalueSourceStorage != null ? prevalueSourceStorage.GetPrevalueSource(ctx.Source.PreValueSourceId) : null);
+            graphType.Field<NonNullGraphType<GuidGraphType>>().Name("_prevalueSource").Resolve(ctx => !Guid.Empty.Equals(ctx.Source.PreValueSourceId) && prevalueSourceService != null ? prevalueSourceService.Get(ctx.Source.PreValueSourceId) : null);
         }
 
         public static void AddBuiltinFields(this ComplexGraphType<FieldConditionRule> graphType)
